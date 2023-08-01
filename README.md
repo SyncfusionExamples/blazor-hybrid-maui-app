@@ -1,4 +1,4 @@
-# blazor-hybrid-maui-app
+# Blazor Hybrid MAUI App
 
 A quick-start project that helps you how to get started with .NET MAUI Blazor Application. 
 
