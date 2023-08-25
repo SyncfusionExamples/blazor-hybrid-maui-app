@@ -1,29 +1,86 @@
 ﻿@page "/"
 @using Syncfusion.Blazor.Charts
 
-<SfChart>
-    <ChartPrimaryXAxis ValueType="Syncfusion.Blazor.Charts.ValueType.Category"></ChartPrimaryXAxis>
-    <ChartSeriesCollection>
-        <ChartSeries DataSource="@Sales" XName="Month" YName="SalesValue" Type="ChartSeriesType.Column">
-        </ChartSeries>
-    </ChartSeriesCollection>
-</SfChart>
+<div class="col-lg-4 property-section">
+    <div class="property-panel-section">
+        <div class="property-panel-content">
+            <table style="width: 100%">
+                <tr style="height:50px">
+                    <td style="width: 50%">
+                        Chart Type:
+                    </td>
+                    <td style="width: 50%">
+                        <SfDropDownList TValue="ChartSeriesType" TItem="SelectionTypes" 
+                            DataSource="@SelectChart">
+                            <DropDownListEvents TValue="ChartSeriesType" TItem="SelectionTypes" ValueChange="ChangeType"/>
+                        <DropDownListFieldSettings Value="Type"></DropDownListFieldSettings>
+                    </SfDropDownList>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="col-lg-8 control-section sb-property-border">
+    <SfChart>
+        <ChartPrimaryXAxis ValueType="Syncfusion.Blazor.Charts.ValueType.Category"></ChartPrimaryXAxis>
+        <ChartSeriesCollection>
+            <ChartSeries DataSource="@Sales" XName="Month" YName="SalesValue" Type="@chart">
+            </ChartSeries>
+        </ChartSeriesCollection>
+    </SfChart>
+</div>
 
-@code {
-    public class SalesInfo
+@code{
+    private ChartSeriesType chart = ChartSeriesType.Line;
+
+    public class SalesInformation
     {
-        public string Month { get; set;}
-        public double SalesValue { get; set;}
+        public string Month { get; set; }
+        public double SalesValue { get; set; }
     }
-    
-    public List<SalesInfo> Sales = new List<SalesInfo>
+
+    public List<SalesInformation> Sales = new List<SalesInformation>
     {
-        new SalesInfo { Month = "Jan", SalesValue = 35 },
-        new SalesInfo { Month = "Feb", SalesValue = 28 },
-        new SalesInfo { Month = "Mar", SalesValue = 34 },
-        new SalesInfo { Month = "Apr", SalesValue = 32 },
-        new SalesInfo { Month = "May", SalesValue = 40 },
-        new SalesInfo { Month = "Jun", SalesValue = 32 },
-        new SalesInfo { Month = "Jul", SalesValue = 35 }
+        new SalesInformation { Month = "Jan", SalesValue = 35 },
+        new SalesInformation { Month = "Feb", SalesValue = 28 },
+        new SalesInformation { Month = "Mar", SalesValue = 34 },
+        new SalesInformation { Month = "Apr", SalesValue = 32 },
+        new SalesInformation { Month = "May", SalesValue = 40 },
+        new SalesInformation { Month = "Jun", SalesValue = 32 },
+        new SalesInformation { Month = "Jul", SalesValue = 35 }
     };
+
+    public class SelectionTypes
+    {
+        public ChartSeriesType Type { get; set; }
+    }
+
+    public List<SelectionTypes> SelectChart { get; set; } = new List<SelectionTypes>
+    {
+        new SelectionTypes() { Type = ChartSeriesType.Area },
+        new SelectionTypes() { Type = ChartSeriesType.Bar },
+        new SelectionTypes() { Type = ChartSeriesType.Line },
+        new SelectionTypes() { Type = ChartSeriesType.Column }
+    };
+
+    protected void ChangeType(ChangeEventArgs<ChartSeriesType, SelectionTypes> args)
+    {
+        if (args.Value == ChartSeriesType.Bar)
+        {
+            chart = ChartSeriesType.Bar;
+        }
+        else if (args.Value == ChartSeriesType.Line)
+        {
+            chart = ChartSeriesType.Line;
+        }
+        else if (args.Value == ChartSeriesType.Column)
+        {
+            chart = ChartSeriesType.Column;
+        }
+        else
+        {
+            chart = ChartSeriesType.Area;
+        }
+    }
 }
